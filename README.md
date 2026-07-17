@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="keystone_logo.png" alt="Keystone logo" width="320">
+  <img width="1529" height="1020" alt="image" src="https://github.com/user-attachments/assets/28d51390-1d77-4210-8305-7e7befb84fe4" />
+
+  <img src="keystone_logo.png" alt="Keystone logo" width="120">
 </p>
 
 <h1 align="center">🗝️ Keystone</h1>
