@@ -25,7 +25,7 @@ log = get_logger()
 
 
 def run(limit: int | None = None, min_convergence: float | None = None,
-        dry_run: bool = False) -> None:
+        dry_run: bool = False, resume: bool = False) -> None:
     threshold = config.MIN_CONVERGENCE if min_convergence is None else min_convergence
     c = q.client()
 
@@ -45,6 +45,12 @@ def run(limit: int | None = None, min_convergence: float | None = None,
     if dry_run:
         _report(scored, threshold)
         return
+
+    if resume:
+        existing = q.existing_theme_ids(c)
+        before = len(survivors)
+        survivors = [s for s in survivors if s.node.theme_id not in existing]
+        log.info(f"resume: skipping {before - len(survivors)} already forged, {len(survivors)} to go")
 
     if limit:
         survivors = survivors[:limit]

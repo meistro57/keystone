@@ -81,4 +81,10 @@ def parse_json(raw: str) -> dict:
         i, j = s.find("{"), s.rfind("}")
         if i != -1 and j != -1:
             s = s[i:j + 1]
-    return json.loads(s)
+    try:
+        return json.loads(s)
+    except json.JSONDecodeError:
+        # R1 occasionally emits an unescaped quote/newline inside a string value.
+        # Repair it rather than lose the keystone.
+        from json_repair import repair_json
+        return repair_json(s, return_objects=True)

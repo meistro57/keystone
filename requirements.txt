@@ -1,3 +1,4 @@
 qdrant-client>=1.11
 requests>=2.31
 python-dotenv>=1.0
+json-repair>=0.30

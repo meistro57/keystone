@@ -110,3 +110,16 @@ def upsert_keystone(c: QdrantClient, point_id: str, vector: list[float],
                     payload: dict[str, Any]) -> None:
     c.upsert(collection_name=config.KEYSTONES_COLLECTION,
              points=[qm.PointStruct(id=point_id, vector=vector, payload=payload)])
+
+
+def existing_theme_ids(c: QdrantClient) -> set[str]:
+    """theme_ids already present in the keystones collection (for --resume)."""
+    ids: set[str] = set()
+    existing = {col.name for col in c.get_collections().collections}
+    if config.KEYSTONES_COLLECTION not in existing:
+        return ids
+    for r in scroll_all(c, config.KEYSTONES_COLLECTION):
+        tid = (r.payload or {}).get("theme_id")
+        if tid:
+            ids.add(str(tid))
+    return ids
